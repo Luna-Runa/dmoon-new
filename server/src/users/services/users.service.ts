@@ -1,8 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { UsersRepository } from './../users.repository';
+import { UserRequestDto } from './../dtos/users.request.dto';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
-  /* async signUp(body: UserRequestDto) {
+  constructor(private readonly usersRepository: UsersRepository) {}
+
+  async signUp(body: UserRequestDto) {
     const { email, name, password } = body;
     const isUserExist = await this.usersRepository.existsByEmail(email);
 
@@ -18,5 +23,5 @@ export class UsersService {
     });
 
     return user.readOnlyData;
-  } */
+  }
 }

@@ -1,4 +1,4 @@
-import { CatsModule } from './../cats/cats.module';
+import { UsersModule } from './../users/users.module';
 import { JwtStrategy } from './jwt/jwt.strategy';
 import { forwardRef, Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
@@ -16,7 +16,7 @@ import { AuthService } from './auth.service';
       signOptions: { expiresIn: '1y' },
     }),
 
-    forwardRef(() => CatsModule), //양쪽에서 순환참조를 하기 때문
+    forwardRef(() => UsersModule), //양쪽에서 순환참조를 하기 때문
   ],
   providers: [AuthService, JwtStrategy],
   exports: [AuthService],

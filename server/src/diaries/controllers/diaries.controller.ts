@@ -1,4 +1,4 @@
-import { AuthService } from './../auth/auth.service';
+import { AuthService } from '../../auth/auth.service';
 import { ApiOperation } from '@nestjs/swagger';
 import { Controller, Delete, Post, Put, Get, Param } from '@nestjs/common';
 
