@@ -1,16 +1,35 @@
+import { SuccessInterceptor } from './../../common/interceptors/success.interceptor';
+import { User } from './../users.schema';
+import { CurrentUser } from './../../common/decorators/user.decorator';
+import { JwtAuthGuard } from './../../auth/jwt/jwt.guard';
 import { AuthService } from './../../auth/auth.service';
 import { UsersService } from './../services/users.service';
 import { UserRequestDto } from '../dtos/users.request.dto';
 import { LoginRequestDto } from '../../auth/dto/login.request.dto';
 import { ApiOperation } from '@nestjs/swagger';
-import { Controller, Post, Body } from '@nestjs/common';
+import {
+  Controller,
+  Body,
+  Get,
+  Post,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 
 @Controller('users')
+@UseInterceptors(SuccessInterceptor)
 export class UsersController {
   constructor(
     private readonly authService: AuthService,
     private readonly usersService: UsersService,
   ) {}
+
+  @ApiOperation({ summary: '로그인 한 유저 정보 가져오기' })
+  @UseGuards(JwtAuthGuard)
+  @Get('info')
+  getCurrentUser(@CurrentUser() user: User) {
+    return user.readOnlyData;
+  }
 
   @ApiOperation({ summary: '로그인' })
   @Post('login')

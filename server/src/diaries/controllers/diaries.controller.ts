@@ -1,14 +1,33 @@
+import { SuccessInterceptor } from './../../common/interceptors/success.interceptor';
+import { DiariesService } from './../services/diaries.service';
+import { CurrentUser } from './../../common/decorators/user.decorator';
+import { User } from './../../users/users.schema';
+import { JwtAuthGuard } from './../../auth/jwt/jwt.guard';
 import { AuthService } from '../../auth/auth.service';
 import { ApiOperation } from '@nestjs/swagger';
-import { Controller, Delete, Post, Put, Get, Param } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Post,
+  Put,
+  Get,
+  Param,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 
 @Controller('diaries')
+@UseInterceptors(SuccessInterceptor)
 export class DiariesController {
-  //constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly diariesServeice: DiariesService,
+  ) {}
   @ApiOperation({ summary: '자신의 일기장 가져오기' })
+  @UseGuards(JwtAuthGuard)
   @Get('list')
-  getDiary() {
-    return '자기꺼만';
+  getDiary(@CurrentUser() user: User) {
+    return this.diariesServeice.getAllDiary(user.readOnlyData.id);
   }
 
   @ApiOperation({ summary: '일기장 추가' })

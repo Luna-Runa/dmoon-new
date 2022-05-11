@@ -4,7 +4,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 
-//jwt 전략 guard -> strategy자동실행 -> validate
+//jwt 인증 전략 : guard -> strategy자동실행 -> validate
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(private readonly usersRepository: UsersRepository) {

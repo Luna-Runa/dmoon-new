@@ -12,10 +12,10 @@ export class AuthService {
   ) {}
 
   async jwtLogIn(data: LoginRequestDto) {
-    const { email, password } = data;
+    const { id, password } = data;
 
     //유효성 검사
-    const user = await this.usersRepository.findUserByEmail(email);
+    const user = await this.usersRepository.findUserById(id);
 
     const isPasswordValidated: boolean = await bcrypt.compare(
       password,
@@ -28,7 +28,7 @@ export class AuthService {
       throw new UnauthorizedException('이메일 또는 비밀번호가 잘못되었습니다.');
 
     //jwt 생성
-    const payload = { email: email, sub: user.id };
+    const payload = { id: id, sub: user._id };
 
     return {
       token: this.jwtService.sign(payload, {

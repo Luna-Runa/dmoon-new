@@ -1,4 +1,4 @@
 export type Payload = {
-  email: string;
-  sub: string;
+  id: string;
+  sub: string; //식별자 _id
 };
