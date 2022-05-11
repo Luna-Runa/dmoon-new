@@ -14,4 +14,20 @@ export class DiariesRepository {
     const diary = await this.diaryModel.find({ id });
     return diary;
   }
+
+  async createDiary(
+    writer: string,
+    moodLevel: number,
+    goalTodo: boolean,
+    note: string,
+  ) {
+    const newDiary = await new this.diaryModel({
+      writer,
+      moodLevel,
+      goalTodo,
+      note,
+    });
+
+    return await newDiary.save();
+  }
 }

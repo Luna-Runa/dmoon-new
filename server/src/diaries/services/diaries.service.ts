@@ -1,3 +1,4 @@
+import { DiaryCreateDto } from './../dtos/diaries.create.dto';
 import { DiariesRepository } from './../diaries.repository';
 import { Injectable } from '@nestjs/common';
 
@@ -9,5 +10,16 @@ export class DiariesService {
     const allDiary = await this.diariesRepository.findDiaryById(id);
 
     return allDiary;
+  }
+
+  async createDiary(body: DiaryCreateDto) {
+    const { writer, moodLevel, goalTodo, note } = body;
+    const diary = await this.diariesRepository.createDiary(
+      writer,
+      moodLevel,
+      goalTodo,
+      note,
+    );
+    return diary;
   }
 }

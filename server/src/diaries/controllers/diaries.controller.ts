@@ -1,3 +1,4 @@
+import { DiaryCreateDto } from './../dtos/diaries.create.dto';
 import { SuccessInterceptor } from './../../common/interceptors/success.interceptor';
 import { DiariesService } from './../services/diaries.service';
 import { CurrentUser } from './../../common/decorators/user.decorator';
@@ -14,6 +15,7 @@ import {
   Param,
   UseGuards,
   UseInterceptors,
+  Body,
 } from '@nestjs/common';
 
 @Controller('diaries')
@@ -32,8 +34,8 @@ export class DiariesController {
 
   @ApiOperation({ summary: '일기장 추가' })
   @Post('add')
-  createDiary() {
-    return '새로운 다이어리 생성';
+  createDiary(@Body() body: DiaryCreateDto) {
+    return this.diariesServeice.createDiary(body);
   }
 
   @ApiOperation({ summary: '일기장 수정' })

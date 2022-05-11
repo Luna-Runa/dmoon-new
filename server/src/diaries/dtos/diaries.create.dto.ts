@@ -6,4 +6,4 @@ export class DiaryCreateDto extends PickType(Diary, [
   'moodLevel',
   'goalTodo',
   'note',
-]) {}
+] as const) {}
