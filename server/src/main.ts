@@ -37,7 +37,7 @@ async function bootstrap() {
   });
 
   app.enableCors({
-    origin: process.env.MODE === 'dev' ? true : process.env.CLIENT_URL,
+    origin: process.env.CLIENT_URL,
     credentials: true,
   });
 

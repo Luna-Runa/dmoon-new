@@ -2,7 +2,7 @@ import { Diary } from '../diaries.schema';
 import { PickType } from '@nestjs/swagger';
 
 export class DiaryCreateDto extends PickType(Diary, [
-  'writer',
+  'id',
   'moodLevel',
   'goalTodo',
   'note',

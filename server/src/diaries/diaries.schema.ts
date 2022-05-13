@@ -28,7 +28,7 @@ export class Diary extends Document {
   })
   @IsString()
   @IsNotEmpty()
-  writer: string;
+  id: string;
 
   @ApiProperty({
     example: '2',

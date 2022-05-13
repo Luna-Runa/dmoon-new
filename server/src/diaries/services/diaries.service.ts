@@ -12,14 +12,26 @@ export class DiariesService {
     return allDiary;
   }
 
-  async createDiary(body: DiaryCreateDto) {
-    const { writer, moodLevel, goalTodo, note } = body;
-    const diary = await this.diariesRepository.createDiary(
-      writer,
-      moodLevel,
-      goalTodo,
-      note,
+  async createDiary(diaryCreateDto: DiaryCreateDto) {
+    const diary = await this.diariesRepository.createDiary(diaryCreateDto);
+    return diary;
+  }
+
+  async editDiary(diaryId: string, diaryCreateDto: DiaryCreateDto) {
+    const diary = await this.diariesRepository.updateDiary(
+      diaryId,
+      diaryCreateDto,
     );
+    return diary;
+  }
+
+  async deleteDiary(diaryId: string) {
+    const diary = await this.diariesRepository.deleteDiary(diaryId);
+    return diary;
+  }
+
+  async likeDiary(diaryId: string) {
+    const diary = await this.diariesRepository.likeUpDiary(diaryId);
     return diary;
   }
 }

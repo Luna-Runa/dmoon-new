@@ -29,4 +29,14 @@ export class UsersRepository {
   async createUser(user: UserRequestDto): Promise<User> {
     return await this.userModel.create(user);
   }
+
+  async searchUser(keyword: string): Promise<User[] | null> {
+    const users = await this.userModel.find({
+      $or: [
+        { name: { $regex: keyword, $options: 'i' } }, //정규표현식을 이용해 찾으며 대소구분 x
+        { id: { $regex: keyword, $options: 'i' } },
+      ],
+    });
+    return users;
+  }
 }

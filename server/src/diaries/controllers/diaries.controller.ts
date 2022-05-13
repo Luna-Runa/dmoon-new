@@ -1,9 +1,9 @@
+import { JwtAuthGuard } from './../../auth/jwt/jwt.guard';
 import { DiaryCreateDto } from './../dtos/diaries.create.dto';
 import { SuccessInterceptor } from './../../common/interceptors/success.interceptor';
 import { DiariesService } from './../services/diaries.service';
 import { CurrentUser } from './../../common/decorators/user.decorator';
 import { User } from './../../users/users.schema';
-import { JwtAuthGuard } from './../../auth/jwt/jwt.guard';
 import { AuthService } from '../../auth/auth.service';
 import { ApiOperation } from '@nestjs/swagger';
 import {
@@ -19,6 +19,7 @@ import {
 } from '@nestjs/common';
 
 @Controller('diaries')
+@UseGuards(JwtAuthGuard)
 @UseInterceptors(SuccessInterceptor)
 export class DiariesController {
   constructor(
@@ -26,7 +27,6 @@ export class DiariesController {
     private readonly diariesServeice: DiariesService,
   ) {}
   @ApiOperation({ summary: '자신의 일기장 가져오기' })
-  @UseGuards(JwtAuthGuard)
   @Get('list')
   getDiary(@CurrentUser() user: User) {
     return this.diariesServeice.getAllDiary(user.readOnlyData.id);
@@ -34,27 +34,25 @@ export class DiariesController {
 
   @ApiOperation({ summary: '일기장 추가' })
   @Post('add')
-  createDiary(@Body() body: DiaryCreateDto) {
-    return this.diariesServeice.createDiary(body);
+  createDiary(@Body() diaryCreateDto: DiaryCreateDto) {
+    return this.diariesServeice.createDiary(diaryCreateDto);
   }
 
   @ApiOperation({ summary: '일기장 수정' })
   @Put('edit/:id')
-  editDiary(@Param('id') id) {
-    console.log(id);
-    return '다이어리 수정';
+  editDiary(@Param('id') diaryId, @Body() diaryCreateDto: DiaryCreateDto) {
+    return this.diariesServeice.editDiary(diaryId, diaryCreateDto);
   }
 
   @ApiOperation({ summary: '일기장 삭제' })
   @Delete('delete/:id')
-  deleteDiary(@Param('id') id) {
-    console.log(id);
-    return '다이어리 삭제';
+  deleteDiary(@Param('id') diaryId) {
+    return this.diariesServeice.deleteDiary(diaryId);
   }
 
   @ApiOperation({ summary: '일기장 좋아요 증가' })
-  @Post('like')
-  likeDiary() {
-    return '좋아요';
+  @Post('like/:id')
+  likeDiary(@Param('id') diaryId) {
+    return this.diariesServeice.likeDiary(diaryId);
   }
 }

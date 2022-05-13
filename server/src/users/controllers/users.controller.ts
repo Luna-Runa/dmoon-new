@@ -1,7 +1,8 @@
+import { JwtAuthGuard } from './../../auth/jwt/jwt.guard';
+import { AuthGuard } from '@nestjs/passport';
 import { SuccessInterceptor } from './../../common/interceptors/success.interceptor';
 import { User } from './../users.schema';
 import { CurrentUser } from './../../common/decorators/user.decorator';
-import { JwtAuthGuard } from './../../auth/jwt/jwt.guard';
 import { AuthService } from './../../auth/auth.service';
 import { UsersService } from './../services/users.service';
 import { UserRequestDto } from '../dtos/users.request.dto';
@@ -14,6 +15,7 @@ import {
   Post,
   UseGuards,
   UseInterceptors,
+  Param,
 } from '@nestjs/common';
 
 @Controller('users')
@@ -38,8 +40,14 @@ export class UsersController {
   }
 
   @ApiOperation({ summary: '회원가입' })
-  @Post()
+  @Post('register')
   async signUp(@Body() body: UserRequestDto) {
     return await this.usersService.signUp(body);
+  }
+
+  @ApiOperation({ summary: '회원 검색' })
+  @Post('search/:keyword')
+  async searchUser(@Param('keyword') keyword: string) {
+    return await this.usersService.searchUser(keyword);
   }
 }
