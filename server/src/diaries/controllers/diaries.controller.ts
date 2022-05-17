@@ -4,7 +4,6 @@ import { SuccessInterceptor } from './../../common/interceptors/success.intercep
 import { DiariesService } from './../services/diaries.service';
 import { CurrentUser } from './../../common/decorators/user.decorator';
 import { User } from './../../users/users.schema';
-import { AuthService } from '../../auth/auth.service';
 import { ApiOperation } from '@nestjs/swagger';
 import {
   Controller,
@@ -22,10 +21,7 @@ import {
 @UseGuards(JwtAuthGuard)
 @UseInterceptors(SuccessInterceptor)
 export class DiariesController {
-  constructor(
-    private readonly authService: AuthService,
-    private readonly diariesServeice: DiariesService,
-  ) {}
+  constructor(private readonly diariesServeice: DiariesService) {}
   @ApiOperation({ summary: '자신의 일기장 가져오기' })
   @Get('list')
   getDiary(@CurrentUser() user: User) {

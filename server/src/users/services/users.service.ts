@@ -11,6 +11,10 @@ export class UsersService {
 
   async signUp(body: UserRequestDto): Promise<ReadOnlyUserDto> {
     const { id, name, password } = body;
+
+    if (id === undefined || name === undefined || password === undefined)
+      throw new UnauthorizedException('필드를 모두 입력해주세요.');
+
     const isUserExist = await this.usersRepository.existsById(id);
 
     if (isUserExist)
